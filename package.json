@@ -1,0 +1,25 @@
+{
+  "name": "phonebook-backend",
+  "version": "1.0.0",
+  "description": "A nodejs express standalone api for the phonebook app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gurupratap-matharu/phonebook-backend.git"
+  },
+  "keywords": [],
+  "author": "Gurupratap Singh Matharu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gurupratap-matharu/phonebook-backend/issues"
+  },
+  "homepage": "https://github.com/gurupratap-matharu/phonebook-backend#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
