@@ -53,20 +53,28 @@ const getId = () => Math.floor(Math.random() * Math.floor(10000000))
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    console.log(`Body=${body}`)
 
     if (!body.name) {
         return response.status(400).json({
             error: "name missing"
         })
     }
+    if (!body.number) {
+        return response.status(400).json({
+            error: "number missing"
+        })
+    }
 
+    if (persons.map(person => person.name).indexOf(body.name) !== -1) {
+        return response.status(400).json({
+            error: "name must be unique!"
+        })
+    }
     const person = {
         "name": body.name,
         "number": body.number,
         "id": getId()
     }
-    console.log(`Created= ${person}`)
     persons = persons.concat(person)
     response.json(person)
 })
