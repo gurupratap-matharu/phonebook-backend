@@ -73,13 +73,10 @@ app.post('/api/persons', (request, response) => {
 
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    console.log('Request=', id, typeof id)
     persons = persons.filter(person => {
-        console.log('Persons=', person.id, typeof person.id, person.id === id)
         return person.id !== id
     })
-    request.status(204).end()
+    response.status(204).end()
 })
 
 const PORT = 3001
