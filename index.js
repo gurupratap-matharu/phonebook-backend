@@ -117,5 +117,8 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.use(unknownEndpoint)
 
-app.listen(process.env.PORT || 3001)
-console.log(`Server running in port ${PORT}`)
+let PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+	console.log(`Server running in port ${PORT}`)
+})
+
