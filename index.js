@@ -48,14 +48,11 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    const person = persons.find(p => p.id === id)
 
-    if (person) {
-        response.json(person)
-    }
-    else {
-        response.status(404).end()
-    }
+    Person.findById(id)
+        .then(person => {
+            response.json(person)
+        })
 })
 
 const getId = () => Math.floor(Math.random() * Math.floor(10000000))
