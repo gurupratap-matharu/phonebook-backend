@@ -1,6 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
+const person = require('./models/person')
 
 app = express()
 
@@ -29,81 +32,62 @@ const unknownEndpoint = (request, response) => {
     })
 }
 
-
-let persons = [
-    {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-    },
-    {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-    },
-    {
-        "name": "Mummy",
-        "number": "12341231234",
-        "id": 12
-    }
-]
-
-
 app.get('/', (request, response) => {
     response.send('<h1>Veer your secret phonebook</h1>')
 })
 
 
 app.get('/info', (request, response) => {
-    const date = new Date()
-    const info = `<div>Phonebook has info of ${persons.length} people</div>${date}`
-    response.send(info)
+    Person
+        .find({})
+        .then(persons => {
+            const date = new Date()
+            const info = `<div>Phonebook has info of ${persons.length} people</div>${date}`
+            response.send(info)
+        })
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person
+        .find({})
+        .then(persons => {
+            response.json(persons)
+        })
 })
 
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    const person = persons.find(p => p.id === id)
 
-    if (person) {
-        response.json(person)
-    }
-    else {
-        response.status(404).end()
-    }
+    Person.findById(id)
+        .then(person => {
+            response.json(person)
+        })
 })
-
-const getId = () => Math.floor(Math.random() * Math.floor(10000000))
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if (!body.name) {
+    if (body.name === undefined) {
         return response.status(400).json({
             error: "name missing"
         })
     }
-    if (!body.number) {
+    if (body.number === undefined) {
         return response.status(400).json({
             error: "number missing"
         })
     }
 
-    if (persons.map(person => person.name).indexOf(body.name) !== -1) {
-        return response.status(400).json({
-            error: "name must be unique!"
-        })
-    }
-    const person = {
+    const person = new Person({
         "name": body.name,
         "number": body.number,
-        "id": getId()
-    }
-    persons = persons.concat(person)
-    response.json(person)
+    })
+
+    person
+        .save()
+        .then(savedPerson => {
+            response.json(savedPerson)
+        })
 })
 
 
