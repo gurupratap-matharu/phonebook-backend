@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
+const person = require('./models/person')
 
 app = express()
 
@@ -37,13 +38,21 @@ app.get('/', (request, response) => {
 
 
 app.get('/info', (request, response) => {
-    const date = new Date()
-    const info = `<div>Phonebook has info of ${persons.length} people</div>${date}`
-    response.send(info)
+    Person
+        .find({})
+        .then(persons => {
+            const date = new Date()
+            const info = `<div>Phonebook has info of ${persons.length} people</div>${date}`
+            response.send(info)
+        })
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person
+        .find({})
+        .then(persons => {
+            response.json(persons)
+        })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -54,8 +63,6 @@ app.get('/api/persons/:id', (request, response) => {
             response.json(person)
         })
 })
-
-const getId = () => Math.floor(Math.random() * Math.floor(10000000))
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
