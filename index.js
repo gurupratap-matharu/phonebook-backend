@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-
+const Person = require('./models/person')
 app = express()
 
 app.use(express.json())
@@ -28,26 +28,6 @@ const unknownEndpoint = (request, response) => {
         error: 'unknown endpoint'
     })
 }
-
-
-let persons = [
-    {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-    },
-    {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-    },
-    {
-        "name": "Mummy",
-        "number": "12341231234",
-        "id": 12
-    }
-]
-
 
 app.get('/', (request, response) => {
     response.send('<h1>Veer your secret phonebook</h1>')
