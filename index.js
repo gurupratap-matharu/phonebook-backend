@@ -63,29 +63,27 @@ const getId = () => Math.floor(Math.random() * Math.floor(10000000))
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if (!body.name) {
+    if (body.name === undefined) {
         return response.status(400).json({
             error: "name missing"
         })
     }
-    if (!body.number) {
+    if (body.number === undefined) {
         return response.status(400).json({
             error: "number missing"
         })
     }
 
-    if (persons.map(person => person.name).indexOf(body.name) !== -1) {
-        return response.status(400).json({
-            error: "name must be unique!"
-        })
-    }
-    const person = {
+    const person = new Person({
         "name": body.name,
         "number": body.number,
-        "id": getId()
-    }
-    persons = persons.concat(person)
-    response.json(person)
+    })
+
+    person
+        .save()
+        .then(savedPerson => {
+            response.json(savedPerson)
+        })
 })
 
 
