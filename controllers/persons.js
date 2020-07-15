@@ -1,4 +1,4 @@
-const personsRouter = require('express').Router
+const personsRouter = require('express').Router()
 const Person = require('../models/person')
 
 personsRouter.get('/', (request, response, next) => {
